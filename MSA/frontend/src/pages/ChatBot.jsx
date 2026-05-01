@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, RefreshCw, MessageSquare, Zap, Bot } from 'lucide-react';
 
-const API = 'http://localhost:5000/api';
-
+const API = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : (import.meta.env.DEV ? 'http://localhost:5000/api' : '/api');
 const AGENT_COLORS = {
     'Lead Capture Agent':    '#6366f1',
     'Qualification Agent':   '#8b5cf6',
