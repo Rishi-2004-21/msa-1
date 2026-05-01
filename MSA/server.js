@@ -80,7 +80,7 @@ if (fs.existsSync(FRONTEND_DIST)) {
   console.log(`[Boot] Serving frontend from: ${FRONTEND_DIST}`);
   app.use(express.static(FRONTEND_DIST));
   // SPA fallback — updated for Express 5 compatibility
-  app.get('(.*)', (req, res) => {
+  app.get(/.*/, (req, res) => {
     res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
   });
 } else {
