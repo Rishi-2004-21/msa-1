@@ -71,9 +71,14 @@ let FRONTEND_DIST = possiblePaths.find(p => fs.existsSync(p)) || possiblePaths[0
 if (fs.existsSync(FRONTEND_DIST)) {
   console.log(`[Boot] Serving frontend from: ${FRONTEND_DIST}`);
   app.use(express.static(FRONTEND_DIST));
-  // SPA fallback — updated for Express 5 compatibility
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
+  // Safest SPA fallback
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && req.accepts('html')) {
+      res.sendFile(path.join(FRONTEND_DIST, 'index.html'));
+    } else {
+      console.error(`[404] Static asset not found: ${req.url}`);
+      res.status(404).send('Not found');
+    }
   });
 } else {
 
